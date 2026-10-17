@@ -1,152 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#713d4d">
-<meta name="description" content="With love, the Varshney family invites you to celebrate the wedding of Adhisha and Dr. Shivasheesh, 9 and 10 December 2026, at Wood Castle Spa & Resort.">
-<title>Adhisha &amp; Shivasheesh | Wedding Invitation</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta name="theme-color" content="#713d4d">
+
+  <meta
+    name="description"
+    content="With love, the Varshney family invites you to celebrate the wedding of Adhisha and Dr. Shivasheesh, 9 and 10 December 2026, at Wood Castle Spa & Resort."
+  >
+
+  <title>Adhisha &amp; Shivasheesh | Wedding Invitation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600&family=Open+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
+
 <body>
-<div id="intro" class="intro" hidden>
-  <div class="envelope">
-    <p class="eyebrow">A celebration of love</p>
+  <!-- Visible only when JavaScript enables the opening cover. -->
+  <div
+    id="intro"
+    class="intro"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="introTitle"
+    hidden
+  >
+    <div class="envelope">
+      <span class="envelope-ornament" aria-hidden="true">❦</span>
 
-    <p class="sanskrit" lang="hi">
-      ॥ श्री गणेशाय नमः ॥
-    </p>
+      <p class="eyebrow">Wedding Invitation</p>
 
-    <p
-      class="intro-names"
-      style="
-        font-family: Cormorant Garamond, sans-serif !important;
-        font-size: 36px !important;
-        font-weight: 400 !important;
-        font-style: normal !important;
-        line-height: 1.5 !important;
-      "
+      <p class="sanskrit" lang="hi">
+        ॥ श्री गणेशाय नमः ॥
+      </p>
+
+      <h2 id="introTitle" class="intro-names">
+        Adhisha
+        <span class="name-and">&amp;</span>
+        Dr. Shivasheesh
+      </h2>
+
+      <div class="divider" aria-hidden="true">
+        <span>✦</span>
+      </div>
+
+      <p class="intro-date">10 December 2026</p>
+
+      <button
+        id="openInvite"
+        class="seal"
+        type="button"
+        aria-label="Open the wedding invitation"
+      >
+        <span>A &amp; S</span>
+        <small>OPEN INVITATION</small>
+      </button>
+
+      <p class="intro-note">With love, the Varshney family</p>
+    </div>
+  </div>
+
+  <main id="invite">
+    <!--
+      Save the supplied PNG at:
+      assets/images/shiv_parvati.png
+
+      The image remains uncropped. Text sits below the illustrated figures.
+    -->
+    <section class="hero" id="home" aria-labelledby="weddingTitle">
+      <div class="hero-canvas" id="heroCanvas">
+        <img
+          id="shivParvatiBackdrop"
+          class="hero-backdrop"
+          src="assets/images/shiv_parvati.png"
+          alt="Lord Shiva and Goddess Parvati seated together on a lotus, framed by flowers and a decorative arch."
+          width="941"
+          height="1672"
+          fetchpriority="high"
+          decoding="async"
+        >
+
+        <div class="hero-petals" aria-hidden="true">
+          <span class="petal petal-1"></span>
+          <span class="petal petal-2"></span>
+          <span class="petal petal-3"></span>
+          <span class="petal petal-4"></span>
+          <span class="petal petal-5"></span>
+          <span class="petal petal-6"></span>
+        </div>
+
+        <div class="hero-frame">
+     <!--      <img
+            src="assets/images/ganesh.png"
+            class="ganesh"
+            alt="Lord Ganesha"
+            width="76"
+            height="82" >
+ -->
+          <p class="sanskrit" lang="hi">
+            ॥ श्री गणेशाय नमः ॥
+          </p>
+
+          <p class="eyebrow">With blessings, love &amp; joy</p>
+
+          <p class="host-line">
+            We joyfully invite you to the wedding of
+          </p>
+
+          <h1 id="weddingTitle" class="wedding-names" tabindex="-1">
+            <span class="name">Adhisha</span>
+            <span class="name-and">&amp;</span>
+            <span class="groom-name">Dr. Shivasheesh</span>
+          </h1>
+
+          <div class="divider" aria-hidden="true">
+            <span>✦</span>
+          </div>
+
+          <p class="hero-date">10 December 2026</p>
+
+          <a href="#couple" class="scroll-link">
+            Discover our celebration
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <nav class="section-nav" aria-label="Invitation sections">
+      <a href="#couple">Our Story</a>
+      <a href="#celebrations">Celebrations</a>
+      <a href="#venue">Venue</a>
+      <a href="#family">Our Family</a>
+    </nav>
+
+    <section class="section couple-section" id="couple">
+      <p class="eyebrow" data-reveal>A beautiful beginning</p>
+      <h2 data-reveal>Two Hearts, One Journey</h2>
+
+      <p class="section-intro" data-reveal>
+        With the blessings of our families, we invite you to join us
+        as we begin our new chapter together.
+      </p>
+
+      <div class="couple-grid">
+        <article class="person-card" data-reveal>
+          <p class="eyebrow">The Bride</p>
+          <h3>Adhisha</h3>
+
+          <div class="mini-divider" aria-hidden="true">✦</div>
+
+          <p>Daughter of</p>
+
+          <p class="parents">
+            Shri Abhishek Varshney<br>
+            &amp; Smt. Dr. Rachna Varshney
+          </p>
+
+          <p class="grandparents">
+            Granddaughter of Late Shri Om Prakash Gupta<br>
+            &amp; Smt. Gayatri Varshney
+          </p>
+        </article>
+
+        <span class="and-symbol" aria-hidden="true">&amp;</span>
+
+        <article class="person-card" data-reveal>
+          <p class="eyebrow">The Groom</p>
+          <h3>Dr. Shivasheesh</h3>
+
+          <div class="mini-divider" aria-hidden="true">✦</div>
+
+          <p>Son of</p>
+
+          <p class="parents">
+            Shri Kamal Kaushal Varshney<br>
+            &amp; Smt. Shalini Varshney
+          </p>
+
+          <p class="grandparents">
+            Grandson of Late Shri Subhash Chandra Vaish<br>
+            &amp; Smt. Maheshwari Devi
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section
+      class="countdown-section section"
+      aria-labelledby="countdown-title"
     >
-      Adhisha
-      <span
-        style="
-          display: block;
-          font-family: Cormorant Garamond, sans-serif !important;
-          font-size: 26px !important;
-          font-weight: 400 !important;
-          font-style: normal !important;
-          margin: 8px 0;
-        "
-      >&amp;</span>
-      Dr. Shivasheesh
-    </p>
+      <p class="eyebrow" data-reveal>
+        Every moment brings us closer
+      </p>
 
-    <p class="intro-date">10 December 2026</p>
+      <h2 id="countdown-title" data-reveal>
+        Counting Down to Forever
+      </h2>
 
-    <button
-      id="openInvite"
-      class="seal"
-      type="button"
-      aria-label="Open the wedding invitation"
-    >
-      <span>A &amp; S</span>
-      <small>OPEN INVITATION</small>
-    </button>
-  </div>
-</div>
-<main id="invite">
-<section class="hero" id="home">
-  <div class="hero-frame">
-    <span class="ornament" aria-hidden="true">❦</span>
-    <img src="assets/images/ganesh.png" class="ganesh" alt="Lord Ganesha" width="76" height="82">
-    <p class="sanskrit" lang="hi">॥ श्री गणेशाय नमः ॥</p>
-    <p class="eyebrow">With blessings, love &amp; joy</p>
-    <p class="host-line">We joyfully invite you to the wedding of</p>
+      <div
+        id="countdown"
+        role="timer"
+        aria-live="off"
+        aria-label="Time until 10 December 2026 at 7 PM India Standard Time"
+      >
+        <div class="time-card">
+          <span id="d">00</span>
+          <small>Days</small>
+        </div>
 
-        <p
-      class="intro-names"
-      style="
-        font-family: Cormorant Garamond, sans-serif !important;
-        font-size: 36px !important;
-        font-weight: 400 !important;
-        font-style: normal !important;
-        line-height: 1.5 !important;
-      "
-    >
-      Adhisha
-      <span
-        style="
-          display: block;
-          font-family: Cormorant Garamond, sans-serif !important;
-          font-size: 26px !important;
-          font-weight: 400 !important;
-          font-style: normal !important;
-          margin: 8px 0;
-        "
-      >&amp;</span>
-      Dr. Shivasheesh
-    </p>
+        <div class="time-card">
+          <span id="h">00</span>
+          <small>Hours</small>
+        </div>
 
-    <div class="divider" aria-hidden="true"><span>✦</span></div>
-    <p class="hero-date">10 December 2026</p>
-    <a href="#couple" class="scroll-link">Discover our celebration <span aria-hidden="true">↓</span></a>
-  </div>
-</section>
-<nav class="section-nav" aria-label="Invitation sections"><a href="#couple">Our Story</a><a href="#celebrations">Celebrations</a><a href="#venue">Venue</a><a href="#family">Our Family</a></nav>
-<section class="section couple-section" id="couple">
-  <p class="eyebrow">A beautiful beginning</p><h2>Two Hearts, One Journey</h2>
-  <p class="section-intro">With the blessings of our families, we invite you to join us as we begin our new chapter together.</p>
-  <div class="couple-grid">
-    <article class="person-card"><p class="eyebrow">The Bride</p><h3>Adhisha</h3><div class="mini-divider" aria-hidden="true">✦</div><p>Daughter of</p><p class="parents">Shri Abhishek Varshney<br>&amp; Smt. Dr. Rachna Varshney</p><p class="grandparents">Granddaughter of Late Shri Om Prakash Gupta<br>&amp; Smt. Gayatri Varshney</p></article>
-    <span class="and-symbol" aria-hidden="true">&amp;</span>
-    <article class="person-card"><p class="eyebrow">The Groom</p><h3>Dr. Shivasheesh</h3><div class="mini-divider" aria-hidden="true">✦</div><p>Son of</p><p class="parents">Shri Kamal Kaushal Varshney<br>&amp; Smt. Shalini Varshney</p><p class="grandparents">Grandson of Late Shri Subhash Chandra Vaish<br>&amp; Smt. Maheshwari Devi</p></article>
-  </div>
-</section>
-<section class="countdown-section section" aria-labelledby="countdown-title">
-  <p class="eyebrow">Every moment brings us closer</p><h2 id="countdown-title">Counting Down to Forever</h2>
-  <div id="countdown" role="timer" aria-label="Time until 10 December 2026 at 7 PM India Standard Time">
-    <div class="time-card"><span id="d">00</span><small>Days</small></div><div class="time-card"><span id="h">00</span><small>Hours</small></div><div class="time-card"><span id="m">00</span><small>Minutes</small></div><div class="time-card"><span id="s">00</span><small>Seconds</small></div>
-  </div>
-  <p class="countdown-date">Thursday · 10 December 2026 · 7:00 PM IST</p><p id="countdown-message" hidden>The wedding day is here. Let the celebrations begin!</p>
-</section>
-<section class="section ceremony-section" id="celebrations">
-  <p class="eyebrow">Moments to cherish together</p><h2>The Wedding Celebrations</h2><p class="section-intro">From the first splash of haldi to the joy of our reception, your presence will make every moment brighter.</p>
-  <div class="events"><article class="event"><span class="event-number">01</span><div><p class="event-date">Wednesday, 9 December 2026</p><h3>Sundowner (Carnival)</h3><p class="event-detail">12:00 PM · Poolside</p></div></article>
-<article class="event"><span class="event-number">02</span><div><p class="event-date">Wednesday, 9 December 2026</p><h3>Shaam-e-Sangeet &amp; Gala Dinner</h3><p class="event-detail">Sangeet · 06:00 PM · Chaur Lawn</p><p class="event-detail">After Party · 10:30 PM · The Raga Hall</p></div></article>
-<article class="event"><span class="event-number">03</span><div><p class="event-date">Thursday, 10 December 2026</p><h3>The Wedding Rituals</h3><p class="event-detail">9:00 AM · Bhaat</p></div></article>
-<article class="event"><span class="event-number">04</span><div><p class="event-date">Thursday, 10 December 2026</p><h3>The Phere Ceremony</h3><p class="event-detail">1:00 PM–3:30 PM · The Grill House Lawn Riverside</p></div></article>
-<article class="event"><span class="event-number">05</span><div><p class="event-date">Thursday, 10 December 2026</p><h3>Varmala &amp; Gala Dinner</h3><p class="event-detail">8:00 PM · Green Miles Lawn</p></div></article>
-</div>
-</section>
-<section class="section venue-section" id="venue">
-  <div class="venue-card"><div class="venue-art" aria-hidden="true"><span>❦</span><p>Where love<br>meets celebration</p><i>Ramnagar · Uttarakhand</i></div>
-  <div class="venue-content"><p class="eyebrow">Our cherished venue</p><h2>Wood Castle</h2><p class="venue-subtitle">Spa &amp; Resort</p><div class="mini-divider" aria-hidden="true">✦</div><p class="venue-address">NH 309, Jim Corbett National Park, Village Dhikuli<br>Ramnagar, District Nainital, Uttarakhand 244715, India</p><a class="outline-btn" href="https://maps.app.goo.gl/yKiNcY5vgmNaFjMt6" target="_blank" rel="noopener noreferrer">Get Directions <span aria-hidden="true">↗</span></a></div></div>
-</section>
-<section class="section family-section" id="family">
-  <p class="eyebrow">With open hearts</p><h2>Awaiting Eyes</h2><p class="section-intro">Your gracious presence will make our celebration complete.</p>
-  <div class="family-list"><div class="family-group"><p>Mr. Anshul Varshney &amp; Mrs. Sindhu Varshney</p><p>Mr. Anurag Varshney &amp; Mrs. Gunjan Varshney</p></div>
-<div class="family-group"><p>Mr. Rajeev Khandelwal &amp; Mrs. Ritika Khandelwal</p></div>
-<div class="family-group"><p>Shri. L. N. Varshney (Adv.) &amp; Late Smt. Raj Rani Varshney</p>
-  <p>Mr. Rajesh Varshney &amp; Mrs. Suruchi Varshney</p>
-  <p>Dr. Davendra Kumar Varshney &amp; Mrs. Reena Varshney</p>
-<p>Mr. Rupesh Varshney &amp; Mrs. Parul Varshney</p></div>
-</section>
-<section class="section children-section">
-  <div class="poem-card"><span class="ornament" aria-hidden="true">❦</span><p class="eyebrow">A little invitation, a lot of love</p><h2 lang="hi" class="hindi-title">बाल आग्रह</h2>
-  <p class="child-poem" lang="hi">खुशियों की रात होगी, जश्न ज़रा हटके होगा,<br>हमारी दीदी की शादी में, अंदाज़ ज़रा हटके होगा।</p>
-  <div class="children-names" aria-label="With love from">
-     <span>Vinayak</span>
-     <span>Aakarsh</span>
-   
-    <span>Shagun</span><span>Paridhi</span><span>Rushika</span><span>Tanisha</span><span>Devanshee</span><span>Pranshi</span><span>Riyanshee</span><span>Pragnay</span><span>Pratyush</span><span>Samriddhi</span></div></div>
-</section>
-<section class="compliments"><p class="eyebrow">With best compliments from</p><p>All Varshney Parivar</p></section>
-<footer><p class="sanskrit" lang="hi">॥ ॐ सर्वे भवन्तु सुखिनः ॥</p><h2>Adhisha &amp; Shivasheesh</h2><p>We look forward to celebrating with you.</p><a href="#home">Back to the beginning ↑</a></footer>
-</main>
-<audio id="bgm" loop preload="none"><source src="assets/audio/song.mp3" type="audio/mpeg"></audio>
-<button id="musicBtn" type="button" aria-label="Play background music" aria-pressed="false" hidden><span aria-hidden="true">♫</span><span id="musicLabel">Music off</span></button>
-</body></html>
+        <div class="time-card">
+          <span id="m">00</span>
+          <small>Minutes</small>
+        </div>
+
+        <div class="time-card">
+          <span id="s">00</span>
+          <small>Seconds</small>
+        </div>
+      </div>
+
+      <p class="countdown-date">
+        Thursday · 10 December 2026 · 7:00 PM IST
+      </p>
+
+      <p id="countdown-message" role="status" hidden>
+        The wedding day is here. Let the celebrations begin!
+      </p>
+    </section>
+
+    <section class="section ceremony-section" id="celebrations">
+      <p class="eyebrow" data-reveal>Moments to cherish together</p>
+      <h2 data-reveal>The Wedding Celebrations</h2>
+
+      <p class="section-intro" data-reveal>
+        From the first splash of haldi to the joy of our reception,
+        your presence will make every moment brighter.
+      </p>
+
+      <div class="events">
+        <article class="event" data-reveal>
+          <span class="event-number">01</span>
+          <div>
+            <p class="event-date">Wednesday, 9 December 2026</p>
+            <h3>Sundowner (Carnival)</h3>
+            <p class="event-detail">12:00 PM · Poolside</p>
+          </div>
+        </article>
+
+        <article class="event" data-reveal>
+          <span class="event-number">02</span>
+          <div>
+            <p class="event-date">Wednesday, 9 December 2026</p>
+            <h3>Shaam-e-Sangeet &amp; Gala Dinner</h3>
+            <p class="event-detail">
+              Sangeet · 06:00 PM · Chaur Lawn
+            </p>
+            <p class="event-detail">
+              After Party · 10:30 PM · The Raga Hall
+            </p>
+          </div>
+        </article>
+
+        <article class="event" data-reveal>
+          <span class="event-number">03</span>
+          <div>
+            <p class="event-date">Thursday, 10 December 2026</p>
+            <h3>The Wedding Rituals</h3>
+            <p class="event-detail">9:00 AM · Bhaat</p>
+          </div>
+        </article>
+
+        <article class="event" data-reveal>
+          <span class="event-number">04</span>
+          <div>
+            <p class="event-date">Thursday, 10 December 2026</p>
+            <h3>The Phere Ceremony</h3>
+            <p class="event-detail">
+              1:00 PM–3:30 PM · The Grill House Lawn Riverside
+            </p>
+          </div>
+        </article>
+
+        <article class="event" data-reveal>
+          <span class="event-number">05</span>
+          <div>
+            <p class="event-date">Thursday, 10 December 2026</p>
+            <h3>Varmala &amp; Gala Dinner</h3>
+            <p class="event-detail">8:00 PM · Green Miles Lawn</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section venue-section" id="venue">
+      <div class="venue-card" data-reveal>
+        <div class="venue-art" aria-hidden="true">
+          <span>❦</span>
+          <p>Where love<br>meets celebration</p>
+          <i>Ramnagar · Uttarakhand</i>
+        </div>
+
+        <div class="venue-content">
+          <p class="eyebrow">Our cherished venue</p>
+          <h2>Wood Castle</h2>
+          <p class="venue-subtitle">Spa &amp; Resort</p>
+
+          <div class="mini-divider" aria-hidden="true">✦</div>
+
+          <p class="venue-address">
+            NH 309, Jim Corbett National Park, Village Dhikuli<br>
+            Ramnagar, District Nainital, Uttarakhand 244715, India
+          </p>
+
+          <a
+            class="outline-btn"
+            href="https://maps.app.goo.gl/yKiNcY5vgmNaFjMt6"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Get Directions
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section family-section" id="family">
+      <p class="eyebrow" data-reveal>With open hearts</p>
+      <h2 data-reveal>Awaiting Eyes</h2>
+
+      <p class="section-intro" data-reveal>
+        Your gracious presence will make our celebration complete.
+      </p>
+
+      <div class="family-list">
+        <div class="family-group" data-reveal>
+          <p>Mr. Anshul Varshney &amp; Mrs. Sindhu Varshney</p>
+          <p>Mr. Anurag Varshney &amp; Mrs. Gunjan Varshney</p>
+        </div>
+
+        <div class="family-group" data-reveal>
+          <p>Mr. Rajeev Khandelwal &amp; Mrs. Ritika Khandelwal</p>
+        </div>
+
+        <div class="family-group" data-reveal>
+          <p>
+            Shri. L. N. Varshney (Adv.) &amp; Late Smt. Raj Rani Varshney
+          </p>
+          <p>Mr. Rajesh Varshney &amp; Mrs. Suruchi Varshney</p>
+          <p>Dr. Davendra Kumar Varshney &amp; Mrs. Reena Varshney</p>
+          <p>Mr. Rupesh Varshney &amp; Mrs. Parul Varshney</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section children-section">
+      <div class="poem-card" data-reveal>
+        <span class="ornament" aria-hidden="true">❦</span>
+        <p class="eyebrow">A little invitation, a lot of love</p>
+        <h2 lang="hi" class="hindi-title">बाल आग्रह</h2>
+
+        <p class="child-poem" lang="hi">
+          खुशियों की रात होगी, जश्न ज़रा हटके होगा,<br>
+          हमारी दीदी की शादी में, अंदाज़ ज़रा हटके होगा।
+        </p>
+
+        <div class="children-names" aria-label="With love from">
+          <span>Vinayak</span>
+          <span>Aakarsh</span>
+          <span>Shagun</span>
+          <span>Paridhi</span>
+          <span>Rushika</span>
+          <span>Tanisha</span>
+          <span>Devanshee</span>
+          <span>Pranshi</span>
+          <span>Riyanshee</span>
+          <span>Pragnay</span>
+          <span>Pratyush</span>
+          <span>Samriddhi</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="compliments">
+      <p class="eyebrow">With best compliments from</p>
+      <p>All Varshney Parivar</p>
+    </section>
+
+    <footer>
+      <p class="sanskrit" lang="hi">
+        ॥ ॐ सर्वे भवन्तु सुखिनः ॥
+      </p>
+      <h2>Adhisha &amp; Shivasheesh</h2>
+      <p>We look forward to celebrating with you.</p>
+      <a href="#home">Back to the beginning ↑</a>
+    </footer>
+  </main>
+
+  <audio id="bgm" loop preload="none">
+    <source src="assets/audio/song.mp3" type="audio/mpeg">
+  </audio>
+
+  <button
+    id="musicBtn"
+    type="button"
+    aria-label="Play background music"
+    aria-pressed="false"
+    hidden
+  >
+    <span aria-hidden="true">♫</span>
+    <span id="musicLabel">Music off</span>
+  </button>
+</body>
+</html>
