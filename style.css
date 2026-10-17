@@ -1263,3 +1263,14 @@ footer a {
   font-size: 22px;
   line-height: 1.5;
 }
+/* Family names: slightly smaller on desktop */
+#family .family-group p {
+  font-size: 23px;
+}
+
+/* Smaller size on mobile */
+@media (max-width: 680px) {
+  #family .family-group p {
+    font-size: 15px;
+  }
+}
