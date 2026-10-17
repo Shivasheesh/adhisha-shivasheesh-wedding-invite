@@ -5,3 +5,65 @@
 @media(max-width:680px){.section{padding:65px 20px}.hero{padding:16px;min-height:95svh}.hero-frame{padding:28px 13px}.hero .eyebrow{font-size:9px;letter-spacing:.15em}.hero .host-line{font-size:11px}.hero-date{font-size:24px}.hero-place{font-size:10px}.section-nav{gap:18px;padding:14px 8px}.section-nav a{font-size:8px;letter-spacing:.04em}.couple-grid{grid-template-columns:1fr;gap:20px;max-width:420px}.and-symbol{line-height:1}.person-card{min-height:0;padding:42px 18px 32px}.person-card h3{font-size:36px}.person-card .parents{font-size:22px!important}.section-intro{font-size:12px;margin-bottom:32px}#countdown{gap:10px}.time-card{width:70px;padding:14px 4px}.time-card span{font-size:42px}.time-card small{font-size:8px;letter-spacing:.12em}.countdown-date{font-size:17px}.events{grid-template-columns:1fr;gap:16px;margin-top:34px}.event:last-child{grid-column:auto;max-width:none}.event{padding:24px 20px}.event h3{font-size:28px}.venue-card{grid-template-columns:1fr}.venue-art{padding:40px 24px;gap:18px}.venue-art span{font-size:55px}.venue-art p{font-size:34px}.venue-content{padding:40px 20px}.venue-content h2{font-size:52px}.family-group{padding:21px 0}.family-group p{font-size:22px;line-height:1.6;margin:10px 0}.poem-card{padding:34px 12px}.child-poem{font-size:17px;line-height:2.3}.children-names span{font-size:18px;padding:0 9px}.children-section{padding:52px 20px}footer h2{font-size:40px}.intro-names{font-size:47px}.envelope{padding:35px 16px}.intro-note{font-size:16px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 @media print{.intro,.section-nav,#musicBtn,.scroll-link,footer a{display:none!important}body.invite-locked{overflow:visible}#invite[hidden]{display:block!important}.hero{min-height:0}.section{padding:28px 12px}.event,.person-card,.family-group,.poem-card{break-inside:avoid}.section-nav{position:static}body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+
+
+/* Main couple names */
+.hero h1 {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(58px, 9vw, 96px);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.hero h1 .name,
+.hero h1 .groom-name {
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+/* Keep the ampersand small and understated */
+.hero h1 em {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+}
+
+/* Names on the opening invitation and in the footer */
+.intro-names,
+footer h2 {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+}
+
+/* Names on the opening invitation */
+#intro .intro-names {
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(44px, 8vw, 66px);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+/* Ampersand between the names */
+#intro .intro-names > span {
+  display: block;
+  font-family: "Great Vibes", cursive;
+  font-size: 34px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.3;
+  margin: 8px 0;
+}
+
+/* Family names: reduce the existing size by 1 point */
+#family .family-group p {
+  font-size: calc(clamp(20px, 2.8vw, 27px) - 1pt);
+}
+
+/* Preserve the original mobile sizing, minus 1 point */
+@media (max-width: 680px) {
+  #family .family-group p {
+    font-size: calc(22px - 1pt);
+  }
+}
