@@ -173,6 +173,90 @@
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
+/* ---------- Sparkler reveals the countdown ---------- */
+var cracker = $("#cracker");
+var clock = $("#countdown");
+
+if (cracker && clock) {
+  var spinning = false;
+  var lit = false;
+
+  var revealClock = function () {
+  cracker.hidden = true;
+  clock.classList.add("is-revealed");
+
+  if (reduceMotion) return;
+
+  // shockwave rings + spark fountain from the middle of the clock
+  var fx = document.createElement("span");
+  fx.className = "clock-fx";
+  fx.setAttribute("aria-hidden", "true");
+  fx.innerHTML = '<span class="clock-ring"></span><span class="clock-ring"></span>';
+
+  for (var i = 0; i < 34; i++) {
+    var spark = document.createElement("span");
+    spark.className = "spark";
+    var angle = (Math.PI * 2 * i) / 34 + Math.random() * 0.4;
+    var dist = 90 + Math.random() * 150;
+    spark.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+    spark.style.setProperty("--dy", Math.sin(angle) * dist * 0.8 + "px");
+    spark.style.animationDelay = 250 + Math.random() * 200 + "ms";
+    fx.appendChild(spark);
+  }
+  clock.appendChild(fx);
+  setTimeout(function () { if (fx.parentNode) fx.parentNode.removeChild(fx); }, 1800);
+
+  // slot-machine spin: random digits, then settle on the real time
+  spinning = true;
+  var els = [dEl, hEl, mEl, sEl];
+  var spinTimer = setInterval(function () {
+    els.forEach(function (el) {
+      if (el) el.textContent = pad(Math.floor(Math.random() * 100));
+    });
+  }, 55);
+
+  setTimeout(function () {
+    clearInterval(spinTimer);
+    spinning = false;
+    tick(); // lands on the real values with the flip animation
+  }, 1250);
+};
+  var burstSparks = function () {
+    var burst = document.createElement("span");
+    burst.className = "cracker-burst";
+    burst.setAttribute("aria-hidden", "true");
+
+    for (var i = 0; i < 36; i++) {
+      var spark = document.createElement("span");
+      spark.className = "spark";
+      var angle = (Math.PI * 2 * i) / 36 + Math.random() * 0.3;
+      var dist = 70 + Math.random() * 110;
+      spark.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      spark.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      spark.style.animationDelay = Math.random() * 90 + "ms";
+      burst.appendChild(spark);
+    }
+
+    cracker.appendChild(burst);
+    setTimeout(function () { if (burst.parentNode) burst.parentNode.removeChild(burst); }, 1200);
+  };
+
+  cracker.addEventListener("click", function () {
+    if (lit) return;
+    lit = true;
+    cracker.setAttribute("aria-expanded", "true");
+    cracker.classList.add("is-lit");
+
+    if (reduceMotion) {
+      revealClock();
+      return;
+    }
+
+    burstSparks();
+    setTimeout(revealClock, 650);
+  });
+}
+
   /* ---------- Countdown ---------- */
   // 10 Dec 2026, 7:00 PM IST (UTC+5:30) = 13:30 UTC
   var target = Date.UTC(2026, 11, 10, 13, 30, 0);
@@ -184,32 +268,48 @@
   function pad(n) { return n < 10 ? "0" + n : String(n); }
 
   var timer;
-  function tick() {
-    var diff = target - Date.now();
 
-    if (diff <= 0) {
-      if (dEl) dEl.textContent = "00";
-      if (hEl) hEl.textContent = "00";
-      if (mEl) mEl.textContent = "00";
-      if (sEl) sEl.textContent = "00";
-      if (message) message.hidden = false;
-      if (countdownBox) countdownBox.setAttribute("aria-label", "The wedding day is here");
-      clearInterval(timer);
-      return;
+function setVal(el, value) {
+  if (spinning || !el || el.textContent === value) return;
+  el.textContent = value;
+  if (!reduceMotion) {
+    el.classList.remove("flip");
+    void el.offsetWidth; // restart the animation
+    el.classList.add("flip");
+
+    // pulse the seconds tile on every change
+    if (el === sEl && el.parentNode) {
+      el.parentNode.classList.remove("beat");
+      void el.parentNode.offsetWidth;
+      el.parentNode.classList.add("beat");
     }
-
-    var secs = Math.floor(diff / 1000);
-    var days = Math.floor(secs / 86400);
-    var hours = Math.floor((secs % 86400) / 3600);
-    var mins = Math.floor((secs % 3600) / 60);
-    var s = secs % 60;
-
-    if (dEl) dEl.textContent = days < 100 ? pad(days) : String(days);
-    if (hEl) hEl.textContent = pad(hours);
-    if (mEl) mEl.textContent = pad(mins);
-    if (sEl) sEl.textContent = pad(s);
   }
+}
+
+function tick() {
+  var diff = target - Date.now();
+
+  if (diff <= 0) {
+    setVal(dEl, "00"); setVal(hEl, "00"); setVal(mEl, "00"); setVal(sEl, "00");
+    if (message) message.hidden = false;
+    if (countdownBox) countdownBox.setAttribute("aria-label", "The wedding day is here");
+    clearInterval(timer);
+    return;
+  }
+
+  var secs  = Math.floor(diff / 1000);
+  var days  = Math.floor(secs / 86400);
+  var hours = Math.floor((secs % 86400) / 3600);
+  var mins  = Math.floor((secs % 3600) / 60);
+  var s     = secs % 60;
+
+  setVal(dEl, days < 100 ? pad(days) : String(days));
+  setVal(hEl, pad(hours));
+  setVal(mEl, pad(mins));
+  setVal(sEl, pad(s));
+}
 
   tick();
   timer = setInterval(tick, 1000);
 })();
+
