@@ -1,429 +1,215 @@
-(() => {
-  'use strict';
+/* ==========================================================
+   Adhisha & Shivasheesh — invitation behaviour
+   - Opening cover (envelope) with "Open" seal
+   - Story-style progress bar + active nav link
+   - Scroll reveal
+   - Countdown to 10 Dec 2026, 7:00 PM IST
+   - Background music toggle (starts after the Open tap)
+   ========================================================== */
+(function () {
+  "use strict";
 
-  const intro = document.getElementById('intro');
-  const invite = document.getElementById('invite');
-  const openButton = document.getElementById('openInvite');
+  var root = document.documentElement;
+  root.classList.add("js");
 
-  const music = document.getElementById('bgm');
-  const musicButton = document.getElementById('musicBtn');
-  const musicLabel = document.getElementById('musicLabel');
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const hero = document.getElementById('home');
-  const heroCanvas = document.getElementById('heroCanvas');
-  const backdrop = document.getElementById('shivParvatiBackdrop');
-  const weddingTitle = document.getElementById('weddingTitle');
+  var $ = function (sel, ctx) { return (ctx || document).querySelector(sel); };
+  var $$ = function (sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); };
 
-  const reducedMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  );
+  /* ---------- Opening cover ---------- */
+  var intro = $("#intro");
+  var openBtn = $("#openInvite");
+  var audio = $("#bgm");
+  var musicBtn = $("#musicBtn");
+  var musicLabel = $("#musicLabel");
+  var heroTitle = $("#weddingTitle");
 
-  let audioFailed = false;
-  let invitationOpened = false;
-  let celebrationStarted = false;
-  let countdownTimer = null;
-
-  const activeRevealAnimations = new Set();
-
-  /* Music */
-
-  function syncMusic() {
-    if (!music || !musicButton || !musicLabel || audioFailed) {
-      return;
-    }
-
-    const playing = !music.paused && !music.ended;
-
-    musicButton.setAttribute('aria-pressed', String(playing));
-
-    musicButton.setAttribute(
-      'aria-label',
-      playing ? 'Pause background music' : 'Play background music'
-    );
-
-    musicLabel.textContent = playing ? 'Music on' : 'Music off';
+  function setMusicState(isPlaying) {
+    if (!musicBtn) return;
+    musicBtn.setAttribute("aria-pressed", String(isPlaying));
+    musicBtn.setAttribute("aria-label", isPlaying ? "Pause background music" : "Play background music");
+    if (musicLabel) musicLabel.textContent = isPlaying ? "Music on" : "Music off";
   }
 
-  function reportAudioFailure() {
-    audioFailed = true;
-
-    if (!musicButton || !musicLabel) {
-      return;
-    }
-
-    musicButton.disabled = true;
-    musicButton.setAttribute('aria-pressed', 'false');
-
-    musicButton.setAttribute(
-      'aria-label',
-      'Background music is unavailable'
-    );
-
-    musicLabel.textContent = 'Music unavailable';
-  }
-
-  async function playMusic() {
-    if (!music || audioFailed) {
-      return;
-    }
-
-    try {
-      await music.play();
-    } catch (error) {
-      /*
-        A blocked playback attempt does not necessarily mean
-        the audio file is unavailable. Keep the button usable.
-      */
-      if (!audioFailed) {
-        syncMusic();
-      }
+  function tryPlay() {
+    if (!audio) return;
+    var p = audio.play();
+    if (p && typeof p.then === "function") {
+      p.then(function () { setMusicState(true); })
+       .catch(function () { setMusicState(false); });
     }
   }
 
-  if (music) {
-    music.volume = 0.35;
-
-    music.addEventListener('play', syncMusic);
-    music.addEventListener('pause', syncMusic);
-    music.addEventListener('ended', syncMusic);
-    music.addEventListener('error', reportAudioFailure);
-
-    const source = music.querySelector('source');
-
-    if (source) {
-      source.addEventListener('error', reportAudioFailure);
-    }
-  }
-
-  if (musicButton && music) {
-    musicButton.addEventListener('click', () => {
-      if (music.paused) {
-        void playMusic();
-      } else {
-        music.pause();
-      }
-    });
-  }
-
-  /* Hero animation */
-
-  function startCelebration() {
-    if (celebrationStarted || !hero) {
-      return;
-    }
-
-    celebrationStarted = true;
-    hero.classList.add('celebration-started');
-  }
-
-  /* Opening cover */
-
-  function openInvitation() {
-    if (invitationOpened) {
-      return;
-    }
-
-    invitationOpened = true;
-
-    if (intro) {
-      intro.hidden = true;
-    }
-
-    if (invite) {
-      invite.hidden = false;
-    }
-
-    if (musicButton) {
-      musicButton.hidden = false;
-    }
-
-    document.body.classList.remove('invite-locked');
-
-    /*
-      Start audio directly from the button gesture, as in
-      your original implementation.
-    */
-    void playMusic();
-
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant'
-    });
-
-    if (weddingTitle) {
-      weddingTitle.focus({ preventScroll: true });
-    }
-
-    requestAnimationFrame(() => {
-      startCelebration();
-    });
-  }
-
-  if (openButton) {
-    openButton.addEventListener('click', openInvitation);
-  }
-
-  function getHashTarget() {
-    if (!window.location.hash) {
-      return null;
-    }
-
-    try {
-      const id = decodeURIComponent(
-        window.location.hash.substring(1)
-      );
-
-      return document.getElementById(id);
-    } catch (error) {
-      return null;
-    }
-  }
-
-  const hashTarget = getHashTarget();
-
-  if (hashTarget) {
-    /*
-      Direct section links bypass the cover.
-      They do not automatically start music.
-    */
-    invitationOpened = true;
-
-    if (intro) {
-      intro.hidden = true;
-    }
-
-    if (invite) {
-      invite.hidden = false;
-    }
-
-    if (musicButton) {
-      musicButton.hidden = false;
-    }
-
-    document.body.classList.remove('invite-locked');
-
-    requestAnimationFrame(() => {
-      startCelebration();
-
-      hashTarget.scrollIntoView({
-        behavior: 'instant',
-        block: 'start'
-      });
-    });
-  } else if (intro && invite && openButton) {
+  if (intro && openBtn) {
     intro.hidden = false;
-    invite.hidden = true;
+    document.body.classList.add("is-locked");
+    openBtn.focus({ preventScroll: true });
 
-    document.body.classList.add('invite-locked');
+    openBtn.addEventListener("click", function () {
+      intro.classList.add("is-opening");
+      document.body.classList.remove("is-locked");
+      window.scrollTo(0, 0);
+      tryPlay(); // user gesture, so autoplay is allowed
 
-    requestAnimationFrame(() => {
-      openButton.focus({ preventScroll: true });
+      var done = function () {
+        intro.hidden = true;
+        if (heroTitle) heroTitle.focus({ preventScroll: true });
+      };
+      if (reduceMotion) done();
+      else setTimeout(done, 1100);
     });
-  } else {
-    /*
-      If the cover markup is missing, leave the invitation usable.
-    */
-    invitationOpened = true;
-
-    if (invite) {
-      invite.hidden = false;
-    }
-
-    if (musicButton) {
-      musicButton.hidden = false;
-    }
-
-    startCelebration();
   }
 
-  /* Backdrop fallback */
+  /* ---------- Music toggle ---------- */
+  if (audio && musicBtn) {
+    var canPlay = true;
+    audio.addEventListener("error", function () {
+      // No audio file present: keep the button hidden rather than broken.
+      canPlay = false;
+      musicBtn.hidden = true;
+    }, true);
 
-  function handleBackdropFailure() {
-    if (backdrop) {
-      backdrop.hidden = true;
-    }
+    // Show the control once the audio element has a source to try.
+    if ($("source", audio)) musicBtn.hidden = false;
 
-    if (heroCanvas) {
-      heroCanvas.classList.add('artwork-unavailable');
-    }
-  }
-
-  if (backdrop) {
-    backdrop.addEventListener('error', handleBackdropFailure);
-
-    if (backdrop.complete && backdrop.naturalWidth === 0) {
-      handleBackdropFailure();
-    }
-  }
-
-  /* Hide missing Ganesha images without a broken-image icon. */
-
-  document.querySelectorAll('.ganesh').forEach((image) => {
-    image.addEventListener('error', () => {
-      image.hidden = true;
+    musicBtn.addEventListener("click", function () {
+      if (!canPlay) return;
+      if (audio.paused) tryPlay();
+      else { audio.pause(); setMusicState(false); }
     });
 
-    if (image.complete && image.naturalWidth === 0) {
-      image.hidden = true;
+    // Pause when the tab is hidden, resume only if it was playing.
+    var wasPlaying = false;
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        wasPlaying = !audio.paused;
+        audio.pause();
+      } else if (wasPlaying) {
+        tryPlay();
+      }
+    });
+  }
+
+  /* ---------- Story progress bar ---------- */
+  var slideSelectors = [
+    "#home", "#couple", "#countdown-title", "#celebrations",
+    "#venue", "#family", ".children-section", "footer"
+  ];
+
+  var slides = slideSelectors
+    .map(function (sel) {
+      var el = $(sel);
+      if (!el) return null;
+      // The countdown selector targets the heading; use its section instead.
+      return el.closest("section") || el;
+    })
+    .filter(Boolean);
+
+  var bar = document.createElement("div");
+  bar.className = "story-progress";
+  bar.setAttribute("aria-hidden", "true");
+  var segments = slides.map(function () {
+    var s = document.createElement("span");
+    bar.appendChild(s);
+    return s;
+  });
+  document.body.appendChild(bar);
+
+  function setActiveSlide(index) {
+    segments.forEach(function (seg, i) {
+      seg.classList.toggle("is-done", i < index);
+      seg.classList.toggle("is-active", i === index);
+    });
+  }
+  setActiveSlide(0);
+
+  // Nav links: highlight the current section.
+  var navLinks = $$(".section-nav a");
+  function setCurrentNav(id) {
+    navLinks.forEach(function (a) {
+      a.classList.toggle("is-current", a.getAttribute("href") === "#" + id);
+    });
+  }
+
+  if ("IntersectionObserver" in window) {
+    var slideObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var idx = slides.indexOf(entry.target);
+        if (idx > -1) setActiveSlide(idx);
+        if (entry.target.id) setCurrentNav(entry.target.id);
+        else setCurrentNav("");
+      });
+    }, { threshold: 0.55 });
+
+    slides.forEach(function (s) { slideObserver.observe(s); });
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = $$("[data-reveal]");
+
+  // Gentle stagger for siblings revealed together.
+  revealEls.forEach(function (el, i) {
+    var siblings = el.parentElement ? $$("[data-reveal]", el.parentElement).length : 1;
+    if (siblings > 1) {
+      var pos = $$("[data-reveal]", el.parentElement).indexOf(el);
+      el.style.setProperty("--reveal-delay", pos * 120 + "ms");
     }
   });
 
-  /* Countdown */
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
 
-  const targetTime = new Date(
-    '2026-12-10T19:00:00+05:30'
-  ).getTime();
-
-  function updateCountdown() {
-    const remaining = Math.max(0, targetTime - Date.now());
-    const totalSeconds = Math.floor(remaining / 1000);
-
-    const values = {
-      d: Math.floor(totalSeconds / 86400),
-      h: Math.floor(totalSeconds / 3600) % 24,
-      m: Math.floor(totalSeconds / 60) % 60,
-      s: totalSeconds % 60
-    };
-
-    Object.entries(values).forEach(([id, value]) => {
-      const element = document.getElementById(id);
-
-      if (element) {
-        element.textContent = String(value).padStart(2, '0');
-      }
-    });
-
-    if (remaining === 0) {
-      const message = document.getElementById('countdown-message');
-
-      if (message) {
-        message.hidden = false;
-        message.textContent =
-          'With love, celebrating Adhisha & Shivasheesh — ' +
-          '10 December 2026.';
-      }
-
-      if (countdownTimer !== null) {
-        clearInterval(countdownTimer);
-        countdownTimer = null;
-      }
-    }
-
-    return remaining;
+    revealEls.forEach(function (el) { revealObserver.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
-  if (updateCountdown() > 0) {
-    countdownTimer = window.setInterval(updateCountdown, 1000);
-  }
+  /* ---------- Countdown ---------- */
+  // 10 Dec 2026, 7:00 PM IST (UTC+5:30) = 13:30 UTC
+  var target = Date.UTC(2026, 11, 10, 13, 30, 0);
 
-  /* One-time section reveals; content is visible without JavaScript. */
+  var dEl = $("#d"), hEl = $("#h"), mEl = $("#m"), sEl = $("#s");
+  var countdownBox = $("#countdown");
+  var message = $("#countdown-message");
 
-  function revealElement(element) {
-    if (
-      reducedMotion.matches ||
-      typeof element.animate !== 'function'
-    ) {
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+  var timer;
+  function tick() {
+    var diff = target - Date.now();
+
+    if (diff <= 0) {
+      if (dEl) dEl.textContent = "00";
+      if (hEl) hEl.textContent = "00";
+      if (mEl) mEl.textContent = "00";
+      if (sEl) sEl.textContent = "00";
+      if (message) message.hidden = false;
+      if (countdownBox) countdownBox.setAttribute("aria-label", "The wedding day is here");
+      clearInterval(timer);
       return;
     }
 
-    const animation = element.animate(
-      [
-        {
-          opacity: 0,
-          transform: 'translateY(16px)'
-        },
-        {
-          opacity: 1,
-          transform: 'translateY(0)'
-        }
-      ],
-      {
-        duration: 750,
-        easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
-        fill: 'none'
-      }
-    );
+    var secs = Math.floor(diff / 1000);
+    var days = Math.floor(secs / 86400);
+    var hours = Math.floor((secs % 86400) / 3600);
+    var mins = Math.floor((secs % 3600) / 60);
+    var s = secs % 60;
 
-    activeRevealAnimations.add(animation);
-
-    const removeAnimation = () => {
-      activeRevealAnimations.delete(animation);
-    };
-
-    animation.addEventListener('finish', removeAnimation, {
-      once: true
-    });
-
-    animation.addEventListener('cancel', removeAnimation, {
-      once: true
-    });
+    if (dEl) dEl.textContent = days < 100 ? pad(days) : String(days);
+    if (hEl) hEl.textContent = pad(hours);
+    if (mEl) mEl.textContent = pad(mins);
+    if (sEl) sEl.textContent = pad(s);
   }
 
-  if ('IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
-          }
-
-          revealElement(entry.target);
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        threshold: 0.12
-      }
-    );
-
-    document.querySelectorAll('[data-reveal]').forEach((element) => {
-      revealObserver.observe(element);
-    });
-  }
-
-  /* Pause decorative motion in background tabs. */
-
-  function updatePageVisibility() {
-    document.body.classList.toggle(
-      'page-paused',
-      document.hidden
-    );
-
-    activeRevealAnimations.forEach((animation) => {
-      if (document.hidden) {
-        animation.pause();
-      } else if (animation.playState === 'paused') {
-        animation.play();
-      }
-    });
-
-    if (!document.hidden) {
-      updateCountdown();
-    }
-  }
-
-  document.addEventListener(
-    'visibilitychange',
-    updatePageVisibility
-  );
-
-  updatePageVisibility();
-
-  /* Apply a changed reduced-motion preference immediately. */
-
-  function handleMotionPreferenceChange() {
-    if (reducedMotion.matches) {
-      activeRevealAnimations.forEach((animation) => {
-        animation.cancel();
-      });
-    }
-  }
-
-  if (typeof reducedMotion.addEventListener === 'function') {
-    reducedMotion.addEventListener(
-      'change',
-      handleMotionPreferenceChange
-    );
-  }
+  tick();
+  timer = setInterval(tick, 1000);
 })();
