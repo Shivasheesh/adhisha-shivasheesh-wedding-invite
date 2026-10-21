@@ -1003,7 +1003,22 @@ footer {
   gap: 0.35rem;
 }
 .family-group:last-child { border-bottom: 1px solid rgba(217, 182, 115, 0.35); }
-.family-group p { font-size: 1.08rem; }
+.family-group p { font-size: 1.0rem; }
+
+
+.family-list p {
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.family-list .nb {
+  white-space: nowrap;
+}
+
+.family-list p {
+  text-wrap: balance; /* evens out the two lines when a name pair wraps */
+}
 
 /* ---------- Children ---------- */
 .children-section {
