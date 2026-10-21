@@ -1161,4 +1161,77 @@ footer a {
   }
   .petal { display: none; }
   .js [data-reveal] { opacity: 1; transform: none; }
+
+
+  .namaste {
+  display: block;
+  width: clamp(80px, 22vw, 120px);
+  height: auto;
+  margin: 0 auto 1rem;
+}
+}
+
+
+.ganesh-blessing {
+  position: relative;
+  text-align: center;
+  padding: 3.5rem 1.5rem 2.5rem;
+  overflow: hidden;
+}
+
+.ganesh-glow {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  width: min(320px, 80vw);
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(201, 162, 75, 0.35) 0%,
+    rgba(201, 162, 75, 0.12) 45%,
+    transparent 70%
+  );
+  animation: ganeshGlow 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.ganesh-idol {
+  position: relative;
+  display: block;
+  width: clamp(150px, 42vw, 240px);
+  height: auto;
+  margin: 0 auto 1.25rem;
+  filter: drop-shadow(0 10px 18px rgba(113, 61, 77, 0.28));
+}
+
+.ganesh-line {
+  position: relative;
+  font-family: "Noto Serif Devanagari", serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #713d4d;
+  margin: 0 0 0.5rem;
+}
+
+.ganesh-sub {
+  position: relative;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  margin: 0 0 1rem;
+}
+
+@keyframes ganeshGlow {
+  0%, 100% { opacity: 0.65; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;    transform: translateX(-50%) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ganesh-glow { animation: none; }
+}
+
+.ganesh-line {
+  color: #b08a96;
 }
